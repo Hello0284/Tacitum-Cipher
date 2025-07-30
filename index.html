@@ -6,6 +6,8 @@
     body { font-family: monospace; background: #111; color: #0f0; padding: 2em; }
     textarea, button { width: 100%; margin: 1em 0; font-family: monospace; font-size: 1em; }
     button { background: #0f0; color: #000; border: none; padding: 0.5em; cursor: pointer; }
+    #copyBtn { width: auto; display: inline-block; margin-top: -0.5em; margin-bottom: 1em; }
+    #output { white-space: pre-wrap; word-wrap: break-word; border: 1px dashed #0f0; padding: 0.5em; min-height: 2em; }
   </style>
 </head>
 <body>
@@ -14,6 +16,7 @@
   <button onclick="encode()">Encode</button>
   <button onclick="decode()">Decode</button>
   <pre id="output"></pre>
+  <button id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
 
   <script>
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -68,6 +71,14 @@
       let input = document.getElementById('inputText').value;
       let decoded = process(input, false);
       document.getElementById('output').textContent = decoded;
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById('output').textContent;
+      if (!output.trim()) return;
+      navigator.clipboard.writeText(output)
+        .then(() => alert("Copied to clipboard!"))
+        .catch(() => alert("Failed to copy."));
     }
   </script>
 </body>
