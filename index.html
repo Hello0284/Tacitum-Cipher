@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>VowelShift-AKey Cipher</title>
+  <title>Tacitum Cipher</title>
   <style>
     body { font-family: monospace; background: #111; color: #0f0; padding: 2em; }
     textarea, button { width: 100%; margin: 1em 0; font-family: monospace; font-size: 1em; }
@@ -9,7 +9,7 @@
   </style>
 </head>
 <body>
-  <h1>VowelShift-AKey Cipher</h1>
+  <h1>Tacitum Cipher</h1>
   <textarea id="inputText" rows="4" placeholder="Enter your text here..."></textarea>
   <button onclick="encode()">Encode</button>
   <button onclick="decode()">Decode</button>
@@ -19,7 +19,7 @@
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
     function getShiftFromKey(keyLetter) {
-      return alphabet.indexOf(keyLetter.toLowerCase()) + 1;
+      return alphabet.indexOf(keyLetter.toLowerCase());
     }
 
     function shiftChar(char, shift, encode = true) {
@@ -49,7 +49,7 @@
     function encode() {
       let input = document.getElementById('inputText').value;
       let vowels = (input.match(/[aeiouAEIOU]/g) || []).length;
-      let keyLetter = alphabet[vowels % 26]; // wrap if > 26
+      let keyLetter = alphabet[vowels % 26];
       let encoded = '';
 
       for (let char of input) {
@@ -60,7 +60,7 @@
         }
       }
 
-      encoded += keyLetter.toUpperCase(); // append key
+      encoded += keyLetter.toUpperCase();
       document.getElementById('output').textContent = encoded;
     }
 
