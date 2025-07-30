@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VowelShift-AKey Cipher</title>
+  <style>
+    body { font-family: monospace; background: #111; color: #0f0; padding: 2em; }
+    textarea, button { width: 100%; margin: 1em 0; font-family: monospace; font-size: 1em; }
+    button { background: #0f0; color: #000; border: none; padding: 0.5em; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>VowelShift-AKey Cipher</h1>
+  <textarea id="inputText" rows="4" placeholder="Enter your text here..."></textarea>
+  <button onclick="encode()">Encode</button>
+  <button onclick="decode()">Decode</button>
+  <pre id="output"></pre>
+
+  <script>
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+    function getShiftFromKey(keyLetter) {
+      return alphabet.indexOf(keyLetter.toLowerCase()) + 1;
+    }
+
+    function shiftChar(char, shift, encode = true) {
+      if (!/[a-zA-Z]/.test(char)) return char;
+      const isUpper = char === char.toUpperCase();
+      let index = alphabet.indexOf(char.toLowerCase());
+      if (index === -1) return char;
+      let newIndex = encode ? (index + shift) % 26 : (index - shift + 26) % 26;
+      let result = alphabet[newIndex];
+      return isUpper ? result.toUpperCase() : result;
+    }
+
+    function process(text, encodeMode = true) {
+      if (text.length === 0) return '';
+      let keyLetter = text.slice(-1);
+      let coreText = text.slice(0, -1);
+      let shift = getShiftFromKey(keyLetter);
+      let result = '';
+
+      for (let char of coreText) {
+        result += shiftChar(char, shift, encodeMode);
+      }
+
+      return result;
+    }
+
+    function encode() {
+      let input = document.getElementById('inputText').value;
+      let vowels = (input.match(/[aeiouAEIOU]/g) || []).length;
+      let keyLetter = alphabet[vowels % 26]; // wrap if > 26
+      let encoded = '';
+
+      for (let char of input) {
+        if (/[a-zA-Z]/.test(char)) {
+          encoded += shiftChar(char, vowels, true);
+        } else {
+          encoded += char;
+        }
+      }
+
+      encoded += keyLetter.toUpperCase(); // append key
+      document.getElementById('output').textContent = encoded;
+    }
+
+    function decode() {
+      let input = document.getElementById('inputText').value;
+      let decoded = process(input, false);
+      document.getElementById('output').textContent = decoded;
+    }
+  </script>
+</body>
+</html>
